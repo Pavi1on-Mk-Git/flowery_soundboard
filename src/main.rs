@@ -132,7 +132,7 @@ fn main() {
         stdout().lock().flush().unwrap();
 
         if stdin().read_line(&mut line).is_ok() {
-            match line.as_str().strip_suffix('\n').unwrap_or_default() {
+            match line.as_str().trim() {
                 "quit" | "exit" | "close" => {
                     break;
                 }
