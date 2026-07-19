@@ -6,14 +6,20 @@ use std::{
 use random::Source;
 use rodio::{DeviceSinkBuilder, PlayError, mixer::Mixer, play};
 
+macro_rules! name_to_file {
+    ($name:literal) => {
+        include_bytes!(concat!("../assets/Flowery_voiceclip_", $name, ".wav"))
+    };
+}
+
 macro_rules! sound_map {
-    ($($name:literal -> [$($file_name:literal,)*],)*) => {
+    ($($name:literal -> [$first_name:literal $(,$next_name:literal)* $(,)?],)*) => {
         (
             &[$(
-                ($name, &[$(include_bytes!(concat!("../assets/Flowery_voiceclip_", $file_name, ".wav")),)*]),
+                ($name, &[name_to_file!($first_name), $(name_to_file!($next_name),)*]),
             )*],
 
-            concat!($(concat!($name, " -> ", concat!($($file_name,)*)), "\n",)*)
+            concat!($(concat!($name, " -> ", concat!($first_name, $(", ", $next_name,)*)), "\n",)*)
         )
     };
 }
