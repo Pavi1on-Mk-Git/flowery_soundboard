@@ -13,13 +13,10 @@ macro_rules! name_to_file {
 }
 
 macro_rules! sound_map {
-    ($($name:literal -> [$first_name:literal $(,$next_name:literal)* $(,)?],)*) => {
+    ($($name:literal -> [$first_name:literal $(, $next_name:literal)* $(,)?],)*) => {
         (
-            &[$(
-                ($name, &[name_to_file!($first_name), $(name_to_file!($next_name),)*]),
-            )*],
-
-            concat!($(concat!($name, " -> ", concat!($first_name, $(", ", $next_name,)*)), "\n",)*)
+            &[$(($name, &[name_to_file!($first_name), $(name_to_file!($next_name),)*]),)*],
+            concat!($($name, " -> ", $first_name, $(", ", $next_name,)* "\n",)*)
         )
     };
 }
